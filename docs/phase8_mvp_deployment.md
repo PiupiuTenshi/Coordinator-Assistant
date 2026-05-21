@@ -55,12 +55,12 @@ QR hiện được hiển thị trong phần đầu của frontend qua mục `Hi
 
 ## Deploy free gợi ý
 
-### Phương án dễ nhất: Render
+### Phương án dễ nhất: Render một Web Service
 
-Render có free web service và static site, nhưng web service miễn phí có thể sleep sau một thời gian không có request. Phù hợp demo/MVP, không phù hợp production y tế.
+Render free web service có thể sleep sau một thời gian không có request. Request đầu sau khi sleep có thể chậm khoảng 50 giây hoặc hơn. Điều này bình thường với gói free, phù hợp demo/MVP, không phù hợp production y tế.
 
 1. Đẩy repo lên GitHub.
-2. Tạo backend:
+2. Tạo Web Service:
    - Render Dashboard -> New -> Web Service.
    - Connect repo.
    - Runtime: Python.
@@ -72,30 +72,21 @@ Render có free web service và static site, nhưng web service miễn phí có 
      ```bash
      uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
      ```
-   - Lưu lại URL backend, ví dụ:
+   - Lưu lại URL public, ví dụ:
      ```text
-     https://medical-symptom-api.onrender.com
+     https://coordinator-assistant.onrender.com
      ```
-3. Tạo frontend:
-   - New -> Static Site.
-   - Root/Publish directory: `frontend`.
-   - Build command: để trống.
-4. Sửa file `frontend/config.js` trước khi deploy frontend:
-   ```js
-   window.APP_CONFIG = {
-     API_BASE: "https://medical-symptom-api.onrender.com/api"
-   };
-   ```
-5. Sau khi có URL frontend public, tạo lại QR:
+3. Backend FastAPI sẽ tự serve frontend ở `/`, nên mở URL public là thấy web.
+4. Tạo lại QR theo URL public:
    ```bash
-   python scripts/generate_qr.py --url https://medical-symptom-frontend.onrender.com --output frontend/public/qr-mvp.svg
+   python scripts/generate_qr.py --url https://coordinator-assistant.onrender.com --output frontend/public/qr-mvp.svg
    ```
-6. Commit/push lại `frontend/config.js` và `frontend/public/qr-mvp.svg`.
-7. Render sẽ tự redeploy khi bạn push lên GitHub.
+5. Commit/push lại `frontend/public/qr-mvp.svg`.
+6. Render sẽ tự redeploy khi bạn push lên GitHub.
 
 ### Deploy bằng Blueprint
 
-Repo có sẵn `render.yaml`, có thể dùng Render Blueprint để tạo cả backend và frontend. Sau khi backend được tạo, vẫn cần sửa `frontend/config.js` sang URL backend public và push lại.
+Repo có sẵn `render.yaml`, có thể dùng Render Blueprint để tạo Web Service. Frontend được serve chung từ FastAPI nên không cần Static Site riêng.
 
 ### Phương án tách frontend/backend
 

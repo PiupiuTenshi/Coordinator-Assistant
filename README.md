@@ -96,6 +96,12 @@ Tài liệu: `docs/phase8_mvp_deployment.md` và `docs/release_checklist.md`.
 
 Lưu ý deploy: `--port $PORT` chỉ dùng trên Render/Railway hoặc môi trường có biến `PORT`. Chạy local bằng PowerShell dùng `--port 8000`.
 
+Render public URL hiện có thể mở thẳng web ở `/` vì FastAPI serve thư mục `frontend`:
+
+```text
+https://coordinator-assistant.onrender.com
+```
+
 ## Disclaimer
 
 Hệ thống chỉ hỗ trợ sàng lọc ban đầu và chuẩn bị dữ liệu nghiên cứu. Không chẩn đoán bệnh, không kê đơn thuốc, không thay thế tư vấn bác sĩ.
