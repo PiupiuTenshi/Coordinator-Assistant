@@ -11,6 +11,8 @@ python -m pip install -r requirements-backend.txt
 uvicorn backend.app.main:app --host 127.0.0.1 --port 8000
 ```
 
+Không dùng lệnh `--port $PORT` khi chạy local bằng PowerShell nếu bạn chưa tự set biến `PORT`. `$PORT` là biến môi trường do nền tảng deploy như Render cấp.
+
 Frontend:
 
 ```bash
@@ -70,16 +72,30 @@ Render có free web service và static site, nhưng web service miễn phí có 
      ```bash
      uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
      ```
+   - Lưu lại URL backend, ví dụ:
+     ```text
+     https://medical-symptom-api.onrender.com
+     ```
 3. Tạo frontend:
    - New -> Static Site.
    - Root/Publish directory: `frontend`.
    - Build command: để trống.
-4. Sau khi có backend URL, mở frontend và set:
+4. Sửa file `frontend/config.js` trước khi deploy frontend:
    ```js
-   localStorage.setItem("apiBase", "https://your-backend.onrender.com/api")
+   window.APP_CONFIG = {
+     API_BASE: "https://medical-symptom-api.onrender.com/api"
+   };
    ```
-   Hoặc sửa trực tiếp `frontend/app.js` trước khi deploy.
-5. Tạo lại QR bằng URL frontend public.
+5. Sau khi có URL frontend public, tạo lại QR:
+   ```bash
+   python scripts/generate_qr.py --url https://medical-symptom-frontend.onrender.com --output frontend/public/qr-mvp.svg
+   ```
+6. Commit/push lại `frontend/config.js` và `frontend/public/qr-mvp.svg`.
+7. Render sẽ tự redeploy khi bạn push lên GitHub.
+
+### Deploy bằng Blueprint
+
+Repo có sẵn `render.yaml`, có thể dùng Render Blueprint để tạo cả backend và frontend. Sau khi backend được tạo, vẫn cần sửa `frontend/config.js` sang URL backend public và push lại.
 
 ### Phương án tách frontend/backend
 

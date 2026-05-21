@@ -1,4 +1,7 @@
-const API_BASE = localStorage.getItem("apiBase") || "http://127.0.0.1:8000/api";
+const API_BASE =
+  localStorage.getItem("apiBase") ||
+  window.APP_CONFIG?.API_BASE ||
+  "http://127.0.0.1:8000/api";
 
 const state = {
   location: null,
