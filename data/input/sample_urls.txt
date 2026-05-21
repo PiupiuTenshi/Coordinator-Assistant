@@ -1,0 +1,4 @@
+# Thêm URL bài viết công khai, mỗi dòng một URL.
+# Chỉ crawl sau khi đã kiểm tra robots.txt và điều khoản sử dụng.
+# Ví dụ:
+# https://www.vinmec.com/vie/bai-viet/...

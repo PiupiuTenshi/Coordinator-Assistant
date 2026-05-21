@@ -1,0 +1,31 @@
+﻿symptom,normalized,source,match_count,example
+chóng mặt,chóng_mặt,seed_dictionary,1,Đau ngực và khó thở cần xử trí thế nào?
+méo miệng,méo_miệng,seed_dictionary,0,
+tiêu chảy,tiêu_chảy,seed_dictionary,0,
+vã mồ hôi,vã_mồ_hôi,seed_dictionary,1,Đau ngực và khó thở cần xử trí thế nào?
+buồn nôn,buồn_nôn,seed_dictionary,0,
+chảy máu,chảy_máu,seed_dictionary,0,
+cứng gáy,cứng_gáy,seed_dictionary,0,
+phát ban,phát_ban,seed_dictionary,0,
+yếu liệt,yếu_liệt,seed_dictionary,0,
+đau bụng,đau_bụng,seed_dictionary,0,
+đau họng,đau_họng,seed_dictionary,1,"Sốt, ho và đau họng thường gặp khi nào?"
+đau khớp,đau_khớp,seed_dictionary,0,
+đau lưng,đau_lưng,seed_dictionary,0,
+đau ngực,đau_ngực,seed_dictionary,1,Đau ngực và khó thở cần xử trí thế nào?
+đầy bụng,đầy_bụng,seed_dictionary,0,
+co giật,co_giật,seed_dictionary,0,
+khó thở,khó_thở,seed_dictionary,2,Đau ngực và khó thở cần xử trí thế nào?
+mất ngủ,mất_ngủ,seed_dictionary,0,
+mệt mỏi,mệt_mỏi,seed_dictionary,0,
+nói khó,nói_khó,seed_dictionary,0,
+táo bón,táo_bón,seed_dictionary,0,
+đau đầu,đau_đầu,seed_dictionary,0,
+sổ mũi,sổ_mũi,seed_dictionary,1,"Sốt, ho và đau họng thường gặp khi nào?"
+đau cơ,đau_cơ,seed_dictionary,0,
+ợ nóng,ợ_nóng,seed_dictionary,0,
+tê bì,tê_bì,seed_dictionary,0,
+ngất,ngất,seed_dictionary,0,
+nôn,nôn,seed_dictionary,0,
+sốt,sốt,seed_dictionary,1,"Sốt, ho và đau họng thường gặp khi nào?"
+ho,ho,seed_dictionary,1,"Sốt, ho và đau họng thường gặp khi nào?"

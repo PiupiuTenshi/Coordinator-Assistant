@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>QR Sàng Lọc Triệu Chứng</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="top-band" aria-label="Thông tin khẩn cấp">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span>
+          </div>
+          <div>
+            <h1>Sàng lọc triệu chứng</h1>
+            <p>Hỗ trợ phân luồng ban đầu</p>
+          </div>
+        </div>
+        <a class="emergency-link" href="tel:115" aria-label="Gọi cấp cứu 115">
+          <span aria-hidden="true">☎</span>
+          Gọi 115
+        </a>
+      </section>
+
+      <section class="form-band">
+        <details class="qr-panel">
+          <summary>Hiển thị QR mở form</summary>
+          <div class="qr-content">
+            <img src="./public/qr-mvp.svg" alt="QR mở form sàng lọc triệu chứng" />
+            <p>In hoặc đặt QR này tại quầy tiếp nhận. Khi deploy thật, hãy tạo lại QR theo domain public.</p>
+          </div>
+        </details>
+
+        <form id="symptomForm" class="symptom-form">
+          <fieldset class="visit-type" aria-label="Loại nhu cầu">
+            <legend>Loại nhu cầu</legend>
+            <label>
+              <input type="radio" name="patient_type" value="first_visit" checked />
+              <span>
+                <strong>Khám lần đầu</strong>
+                <small>Chưa có lịch tái khám</small>
+              </span>
+            </label>
+            <label>
+              <input type="radio" name="patient_type" value="follow_up" />
+              <span>
+                <strong>Tái khám</strong>
+                <small>Đã có hẹn hoặc hồ sơ cũ</small>
+              </span>
+            </label>
+          </fieldset>
+
+          <label class="field field-wide">
+            <span>Triệu chứng chính</span>
+            <textarea
+              id="symptomText"
+              name="symptom_text"
+              rows="5"
+              maxlength="1500"
+              required
+              placeholder="Ví dụ: Tôi bị đau ngực, khó thở và vã mồ hôi từ 30 phút trước."
+            ></textarea>
+          </label>
+
+          <div class="field-grid">
+            <label class="field">
+              <span>Thời gian xuất hiện</span>
+              <input id="duration" name="duration" type="text" placeholder="30 phút, 2 ngày..." />
+            </label>
+            <label class="field">
+              <span>Tuổi</span>
+              <input id="age" name="age" type="number" min="0" max="120" value="35" required />
+            </label>
+            <label class="field">
+              <span>Giới tính</span>
+              <select id="gender" name="gender">
+                <option value="unknown">Không chọn</option>
+                <option value="female">Nữ</option>
+                <option value="male">Nam</option>
+                <option value="other">Khác</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Mức khó chịu: <output id="painValue">5</output>/10</span>
+              <input id="discomfort" name="discomfort_level" type="range" min="1" max="10" value="5" />
+            </label>
+          </div>
+
+          <fieldset class="chip-fieldset">
+            <legend>Nhóm nguy cơ</legend>
+            <label><input type="checkbox" name="risk_groups" value="trẻ nhỏ" /> Trẻ nhỏ</label>
+            <label><input type="checkbox" name="risk_groups" value="phụ nữ mang thai" /> Phụ nữ mang thai</label>
+            <label><input type="checkbox" name="risk_groups" value="người cao tuổi" /> Người cao tuổi</label>
+            <label><input type="checkbox" name="risk_groups" value="bệnh nền" /> Bệnh nền</label>
+          </fieldset>
+
+          <fieldset class="chip-fieldset danger">
+            <legend>Dấu hiệu nguy hiểm nếu có</legend>
+            <label><input type="checkbox" name="dangerous_symptoms" value="đau ngực" /> Đau ngực</label>
+            <label><input type="checkbox" name="dangerous_symptoms" value="khó thở" /> Khó thở</label>
+            <label><input type="checkbox" name="dangerous_symptoms" value="liệt" /> Yếu/liệt</label>
+            <label><input type="checkbox" name="dangerous_symptoms" value="co giật" /> Co giật</label>
+            <label><input type="checkbox" name="dangerous_symptoms" value="bất tỉnh" /> Bất tỉnh</label>
+          </fieldset>
+
+          <div class="location-row">
+            <button type="button" id="locationButton" class="secondary-button">
+              <span aria-hidden="true">⌖</span>
+              Lấy vị trí
+            </button>
+            <p id="locationStatus">Chưa có vị trí</p>
+          </div>
+
+          <label class="consent-row">
+            <input id="consent" name="consent" type="checkbox" />
+            <span>Tôi đồng ý gửi thông tin đã nhập để hệ thống phân tích trong phiên này.</span>
+          </label>
+
+          <button id="submitButton" class="primary-button" type="submit">
+            <span aria-hidden="true">✓</span>
+            Kiểm tra nhanh
+          </button>
+        </form>
+      </section>
+
+      <section id="resultBand" class="result-band hidden" aria-live="polite">
+        <div id="triageBanner" class="triage-banner">
+          <div>
+            <p class="eyebrow">Mức độ cần xử trí</p>
+            <h2 id="triageTitle">Đang phân tích</h2>
+          </div>
+          <a id="bannerEmergencyCall" class="banner-call" href="tel:115">Gọi 115</a>
+        </div>
+
+        <div class="result-layout">
+          <section class="result-section">
+            <h3>Khuyến nghị</h3>
+            <p id="triageMessage"></p>
+            <ul id="adviceList" class="plain-list"></ul>
+          </section>
+
+          <section class="result-section">
+            <h3>Triệu chứng nhận diện</h3>
+            <div id="symptomPills" class="pill-row"></div>
+          </section>
+
+          <section class="result-section">
+            <h3>Khoa gợi ý</h3>
+            <div id="specialtyList" class="item-list"></div>
+          </section>
+
+          <section id="doctorSection" class="result-section">
+            <h3>Bác sĩ phù hợp</h3>
+            <div id="doctorList" class="item-list"></div>
+          </section>
+
+          <section class="result-section">
+            <h3>Bệnh viện gần nhất</h3>
+            <div id="hospitalList" class="item-list"></div>
+          </section>
+
+          <section class="result-section map-section">
+            <h3>Bản đồ nội viện</h3>
+            <div id="hospitalMap" class="indoor-map" role="img" aria-label="Sơ đồ chỉ đường trong bệnh viện"></div>
+            <p id="mapCaption"></p>
+          </section>
+
+          <section class="result-section">
+            <h3>Phản hồi</h3>
+            <div class="feedback-row">
+              <button type="button" data-feedback="useful">Hữu ích</button>
+              <button type="button" data-feedback="not_useful">Chưa phù hợp</button>
+              <button type="button" data-feedback="unsafe">Cần kiểm tra</button>
+            </div>
+            <p id="feedbackStatus"></p>
+          </section>
+        </div>
+
+        <p id="disclaimer" class="disclaimer"></p>
+      </section>
+    </main>
+
+    <template id="itemTemplate">
+      <article class="list-item"></article>
+    </template>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
